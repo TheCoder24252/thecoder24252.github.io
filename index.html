@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>thecoder24252's Space</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/278525929?v=4">
+    <title>TheCoder24252</title>
     <style>
         /* Color variables for light and dark modes */
         :root {
@@ -108,6 +109,30 @@
             stroke-linejoin: round;
             transition: stroke 0.3s;
         }
+
+        /* The blueprint for the sliding animation */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(40px); /* Starts 40 pixels lower */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);    /* Moves up to its normal spot */
+    }
+}
+
+/* Base class for elements that will slide in */
+.animate-on-load {
+    opacity: 0; /* Hidden before the animation starts */
+    animation: slideUpFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Delay the project card so it slides up second */
+.delay-1 {
+    animation-delay: 0.3s;
+}
+
 
         /* --- Content Layout Styling --- */
         .profile-container {
@@ -216,7 +241,7 @@
     </div>
 
     <!-- Centered Profile Section -->
-    <div class="profile-container">
+    <div class="profile-container animate-on-load">
         <img class="profile-img" src="https://avatars.githubusercontent.com/u/278525929?v=4" alt="thecoder24252's Profile Picture">
         <h1 class="username-title">TheCoder24252</h1>
         <p class="profile-desc">
@@ -225,13 +250,14 @@
     </div>
 
     <!-- Card Section Below -->
-    <div class="project-card">
+    <div class="project-card animate-on-load delay-1">
         <img class="card-img" src="https://thecoder24252.github.io/maze-game.png" alt="Maze Game Cover Image">
         <div class="card-content">
             <h2 class="card-title">Maze Game</h2>
             <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails and you can also save your credits to go up in the leaderboard. Play TheCoder24252's Maze Game at <a href="https://thecoder24252.github.io/games">https://thecoder24252.github.io/games</a></p>
         </div>
     </div>
+    
 
     <!-- Javascript to handle the switching logic -->
     <script>
