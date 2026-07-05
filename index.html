@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="device">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thecoder24252's Space</title>
+    <style>
+        /* Color variables for light and dark modes */
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #333333;
+            --container-title: #2c3e50;
+            --desc-color: #666666;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --card-desc-color: #555555;
+            --toggle-bg: #e4e7e6;
+            --toggle-btn-active: #ffffff;
+            --toggle-icon-color: #555555;
+            --link-color: #3498db;
+        }
+
+        /* Dark mode colors applied when data-theme matches */
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #f4f7f6;
+            --container-title: #ecf0f1;
+            --desc-color: #b0b0b0;
+            --card-bg: #2d2d2d;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --card-desc-color: #cccccc;
+            --toggle-bg: #333333;
+            --toggle-btn-active: #444444;
+            --toggle-icon-color: #f4f7f6;
+            --link-color: #5dade2;
+        }
+
+        /* Automatically apply dark colors if device theme is active and user prefers dark */
+        @media (prefers-color-scheme: dark) {
+            [data-theme="device"] {
+                --bg-color: #1a1a1a;
+                --text-color: #f4f7f6;
+                --container-title: #ecf0f1;
+                --desc-color: #b0b0b0;
+                --card-bg: #2d2d2d;
+                --card-shadow: rgba(0, 0, 0, 0.4);
+                --card-desc-color: #cccccc;
+                --toggle-bg: #333333;
+                --toggle-btn-active: #444444;
+                --toggle-icon-color: #f4f7f6;
+                --link-color: #5dade2;
+            }
+        }
+
+        /* Base styles for the entire page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers everything horizontally */
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- Theme Switcher Styling --- */
+        .theme-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            background-color: var(--toggle-bg);
+            padding: 4px;
+            border-radius: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+
+        .theme-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            transition: background-color 0.2s;
+        }
+
+        /* Highlight the chosen mode button */
+        .theme-btn.active {
+            background-color: var(--toggle-btn-active);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .theme-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--toggle-icon-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s;
+        }
+
+        /* --- Content Layout Styling --- */
+        .profile-container {
+            text-align: center; /* Centers the text inside the div */
+            margin-top: 60px;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        /* Makes the profile image perfectly round */
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* This creates the circle */
+            object-fit: cover;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 4px 8px var(--card-shadow);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .username-title {
+            font-size: 2rem;
+            margin: 15px 0 5px 0;
+            color: var(--container-title);
+            transition: color 0.3s;
+        }
+
+        .profile-desc {
+            font-size: 1.1rem;
+            color: var(--desc-color);
+            line-height: 1.5;
+            transition: color 0.3s;
+        }
+
+        /* Card layout below the profile */
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden; /* Keeps the image corners rounded */
+            transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+            margin-bottom: 50px;
+        }
+
+        /* Hover effect to make the card lift up */
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Image inside the project card */
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Text area inside the card */
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            color: var(--container-title);
+            transition: color 0.3s;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--card-desc-color);
+            line-height: 1.6;
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .card-desc a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .card-desc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Three-Setting Mode Switcher -->
+    <div class="theme-switch-container">
+        <!-- Light Mode Button (Sun) -->
+        <button class="theme-btn" id="light-btn" onclick="setTheme('light')" title="Light Mode">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+        <!-- Device Theme Button (Monitor) -->
+        <button class="theme-btn active" id="device-btn" onclick="setTheme('device')" title="Device Theme">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </button>
+        <!-- Dark Mode Button (Moon) -->
+        <button class="theme-btn" id="dark-btn" onclick="setTheme('dark')" title="Dark Mode">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+    </div>
+
+    <!-- Centered Profile Section -->
+    <div class="profile-container">
+        <img class="profile-img" src="https://avatars.githubusercontent.com/u/278525929?v=4" alt="thecoder24252's Profile Picture">
+        <h1 class="username-title">TheCoder24252</h1>
+        <p class="profile-desc">
+          Welcome to my website, I am a coder who codes in HTML, CSS, Javascript and does a litle bit of Node.js. Below you can find the projects that I code in my freetime
+        </p>
+    </div>
+
+    <!-- Card Section Below -->
+    <div class="project-card">
+        <img class="card-img" src="https://thecoder24252.github.io/maze-game.png" alt="Maze Game Cover Image">
+        <div class="card-content">
+            <h2 class="card-title">Maze Game</h2>
+            <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails and you can also save your credits to go up in the leaderboard. Play TheCoder24252's Maze Game at <a href="https://thecoder24252.github.io/games">https://thecoder24252.github.io/games</a></p>
+        </div>
+    </div>
+
+    <!-- Javascript to handle the switching logic -->
+    <script>
+        function setTheme(themeName) {
+            // Update the HTML root attribute
+            document.documentElement.setAttribute('data-theme', themeName);
+            
+            // Save the choice in local storage
+            localStorage.setItem('user-theme', themeName);
+            
+            // Remove active status from all buttons
+            document.getElementById('light-btn').classList.remove('active');
+            document.getElementById('device-btn').classList.remove('active');
+            document.getElementById('dark-btn').classList.remove('active');
+            
+            // Add active status to the chosen button
+            document.getElementById(themeName + '-btn').classList.add('active');
+        }
+
+        // On page load, remember what theme the user chose last time
+        const savedTheme = localStorage.getItem('user-theme') || 'device';
+        setTheme(savedTheme);
+    </script>
+</body>
+</html>
