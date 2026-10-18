@@ -28,6 +28,9 @@
             --particle-rgb: 190, 80, 80;
             --particle-opacity: 0.55;
             --particle-line-opacity: 0.1;
+            /* Card glow colors (subtle red) */
+            --card-glow: rgba(190, 80, 80, 0.08);
+            --card-glow-hover: rgba(190, 80, 80, 0.16);
         }
 
         /* Dark mode colors applied when data-theme matches */
@@ -46,6 +49,9 @@
             --particle-rgb: 255, 107, 107;
             --particle-opacity: 0.8;
             --particle-line-opacity: 0.12;
+            /* Slightly stronger glow in dark mode so it reads on dark backgrounds */
+            --card-glow: rgba(255, 107, 107, 0.10);
+            --card-glow-hover: rgba(255, 107, 107, 0.22);
         }
 
         /* Automatically apply dark colors if device theme is active and user prefers dark */
@@ -65,6 +71,8 @@
                 --particle-rgb: 255, 107, 107;
                 --particle-opacity: 0.8;
                 --particle-line-opacity: 0.12;
+                --card-glow: rgba(255, 107, 107, 0.10);
+                --card-glow-hover: rgba(255, 107, 107, 0.22);
             }
         }
 
@@ -216,7 +224,8 @@
             cursor: pointer;
             background-color: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 4px 15px var(--card-shadow);
+            /* base shadow + subtle red glow */
+            box-shadow: 0 4px 15px var(--card-shadow), 0 0 18px var(--card-glow);
             max-width: 450px;
             width: 100%;
             overflow: hidden; /* Keeps the image corners rounded */
@@ -227,6 +236,8 @@
         /* Hover effect to make the card lift up */
         .project-card:hover {
             transform: translateY(-5px);
+            /* slightly stronger shadow and glow on hover */
+            box-shadow: 0 8px 24px var(--card-shadow), 0 0 26px var(--card-glow-hover);
         }
 
         /* Image inside the project card */
@@ -274,7 +285,7 @@
     <div class="theme-switch-container">
         <!-- Light Mode Button (Sun) -->
         <button class="theme-btn" id="light-btn" onclick="setTheme('light')" title="Light Mode">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" [...]
         </button>
         <!-- Device Theme Button (Monitor) -->
         <button class="theme-btn active" id="device-btn" onclick="setTheme('device')" title="Device Theme">
@@ -299,7 +310,7 @@
         <img class="card-img" src="https://thecoder24252.github.io/CFOP-Learner.png" alt="CFOP Learner Cover Image">
         <div class="card-content">
             <h2 class="card-title">CFOP Learner</h2>
-            <p class="card-desc">After I made a ZBLL learner I thought I should make one for CFOP, so here it is: <a href="https://thecoder24252.github.io/CFOP-Learner">https://thecoder24252.github.io/CFOP-Learner</a></p>
+            <p class="card-desc">After I made a ZBLL learner I thought I should make one for CFOP, so here it is: <a href="https://thecoder24252.github.io/CFOP-Learner">https://thecoder24252.gith[...]
         </div>
     </div>
 
@@ -307,7 +318,7 @@
         <img class="card-img" src="https://thecoder24252.github.io/ZBLL-Learner.png" alt="ZBLL Learner Cover Image">
         <div class="card-content">
             <h2 class="card-title">ZBLL Learner</h2>
-            <p class="card-desc">ZBLL is a very advanced 3x3 last layer method that requires you to memorize 493 algorithms and since recently I started learning ZBLL, I made this website to help track your progress on learning the method. With ZBLL Learner you can mark what algorithms you have learned and you can use the weekly checklist to learn and practice every day. <a href="https://thecoder24252.github.io/ZBLL-Learner">https://thecoder24252.github.io/ZBLL-Learner</a></p>
+            <p class="card-desc">ZBLL is a very advanced 3x3 last layer method that requires you to memorize 493 algorithms and since recently I started learning ZBLL, I made this website to help[...]
         </div>
     </div>
     
@@ -315,7 +326,7 @@
         <img class="card-img" src="https://thecoder24252.github.io/maze-game.png" alt="Maze Game Cover Image">
         <div class="card-content">
             <h2 class="card-title">Maze Game</h2>
-            <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails and you can also save your credits to go up in the leaderboard. Play TheCoder24252's Maze Game at <a href="https://thecoder24252.github.io/games">https://thecoder24252.github.io/games</a></p>
+            <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails and you ca[...]
         </div>
     </div>
     <!-- Javascript to handle the switching logic -->
