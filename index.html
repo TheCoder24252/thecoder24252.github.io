@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='Hi, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java.'>
     <meta property="og:title" content="TheCoder24252" />
-  <meta property="og:description" content="Hi, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://thecoder24252.github.io" />
-  <meta property="og:image" content="https://thecoder24252.github.io/preview.png" />
+    <meta property="og:description" content="Hi, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://thecoder24252.github.io" />
+    <meta property="og:image" content="https://thecoder24252.github.io/preview.png" />
     <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/278525929?v=4">
     <title>TheCoder24252</title>
     <style>
-        /* Color variables for light and dark modes */
-        :root { 
+        :root {
             --bg-color: #f4f7f6;
             --text-color: #333333;
             --container-title: #2c3e50;
@@ -28,12 +27,10 @@
             --particle-rgb: 190, 80, 80;
             --particle-opacity: 0.55;
             --particle-line-opacity: 0.1;
-            /* Card glow colors (more visible red) */
             --card-glow: rgba(190, 80, 80, 0.18);
             --card-glow-hover: rgba(190, 80, 80, 0.34);
         }
 
-        /* Dark mode colors applied when data-theme matches */
         [data-theme="dark"] {
             --bg-color: #1a1a1a;
             --text-color: #f4f7f6;
@@ -49,12 +46,10 @@
             --particle-rgb: 255, 107, 107;
             --particle-opacity: 0.8;
             --particle-line-opacity: 0.12;
-            /* Stronger glow in dark mode so it reads on dark backgrounds */
             --card-glow: rgba(255, 107, 107, 0.22);
             --card-glow-hover: rgba(255, 107, 107, 0.44);
         }
 
-        /* Automatically apply dark colors if device theme is active and user prefers dark */
         @media (prefers-color-scheme: dark) {
             [data-theme="device"] {
                 --bg-color: #1a1a1a;
@@ -76,7 +71,6 @@
             }
         }
 
-        /* Base styles for the entire page */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -107,7 +101,6 @@
             z-index: 1;
         }
 
-        /* --- Theme Switcher Styling --- */
         .theme-switch-container {
             position: absolute;
             top: 20px;
@@ -152,14 +145,8 @@
         }
 
         @keyframes slideUpFade {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-on-load {
@@ -183,25 +170,35 @@
             margin-top: 60px;
             margin-bottom: 30px;
             max-width: 500px;
-            transition: transform 0.7s cubic-bezier(.22,.9,.26,1), margin-top 0.7s, max-width 0.7s;
+            transition: transform 0.7s cubic-bezier(.22,.9,.26,1), margin-top 0.7s, max-width 0.7s, filter 0.7s;
         }
 
-        /* Make intro centered relative to the viewport using fixed positioning
-           Use inline-flex and width:auto so the container shrinks to fit its contents
-           (prevents it stretching full-width and appearing off-center). */
         body.is-intro .profile-container {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(1.45);
             margin: 0;
-            max-width: 720px;
             width: auto;
-            display: inline-flex;
+            max-width: none;
+            display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 12px;
             z-index: 10;
             pointer-events: none;
+            animation: none;
+        }
+
+        body:not(.is-intro) .profile-container {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            display: block;
+            margin-top: 60px;
+            max-width: 500px;
         }
 
         .profile-img {
@@ -219,6 +216,11 @@
             height: 260px;
         }
 
+        body:not(.is-intro) .profile-img {
+            width: 150px;
+            height: 150px;
+        }
+
         .username-title {
             font-size: 2rem;
             margin: 15px 0 5px 0;
@@ -228,6 +230,7 @@
 
         body.is-intro .username-title {
             font-size: 3.6rem;
+            margin: 0;
         }
 
         .profile-desc {
@@ -342,7 +345,7 @@
             <p class="card-desc">ZBLL is a very advanced 3x3 last layer method that requires you to memorize 493 algorithms and since recently I started learning ZBLL, I made this website to help track my progress.</p>
         </div>
     </div>
-    
+
     <div class="project-card animate-on-load delay-3" onclick="window.location.href='https://thecoder24252.github.io/games'">
         <img class="card-img" src="https://thecoder24252.github.io/maze-game.png" alt="Maze Game Cover Image">
         <div class="card-content">
@@ -368,15 +371,9 @@
         let targetParallaxOffset = parallaxOffset;
 
         function updateParticleColor() {
-            particleRgb = getComputedStyle(document.documentElement)
-                .getPropertyValue('--particle-rgb')
-                .trim();
-            particleOpacity = getComputedStyle(document.documentElement)
-                .getPropertyValue('--particle-opacity')
-                .trim();
-            particleLineOpacity = getComputedStyle(document.documentElement)
-                .getPropertyValue('--particle-line-opacity')
-                .trim();
+            particleRgb = getComputedStyle(document.documentElement).getPropertyValue('--particle-rgb').trim();
+            particleOpacity = getComputedStyle(document.documentElement).getPropertyValue('--particle-opacity').trim();
+            particleLineOpacity = getComputedStyle(document.documentElement).getPropertyValue('--particle-line-opacity').trim();
         }
 
         function createParticles() {
@@ -387,7 +384,7 @@
             particleCanvas.height = Math.round(particleHeight * pixelRatio);
             particleContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-            const count = Math.min(64, Math.max(22, Math.round(particleWidth * particleHeight / 19000)));
+            const count = Math.min(64, Math.max(22, Math.round((particleWidth * particleHeight) / 19000)));
             particles = Array.from({ length: count }, () => ({
                 x: Math.random() * particleWidth,
                 y: Math.random() * particleHeight,
@@ -410,7 +407,6 @@
                 const y = ((particle.y - parallaxOffset) % particleHeight + particleHeight) % particleHeight;
                 const shade = particle.shade * 14;
                 particleContext.fillStyle = `rgba(${Math.round(red + shade)}, ${Math.round(green + shade)}, ${Math.round(Math.min(255, blue + shade))}, ${particleOpacity})`;
-                particleContext.globalAlpha = 1;
                 particleContext.beginPath();
                 particleContext.arc(particle.x, y, particle.radius, 0, Math.PI * 2);
                 particleContext.fill();
@@ -481,7 +477,6 @@
             document.documentElement.setAttribute('data-theme', themeName);
             updateParticleColor();
             drawParticles();
-
             localStorage.setItem('user-theme', themeName);
 
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
@@ -511,26 +506,29 @@
             const body = document.body;
             const profileContainer = document.querySelector('.profile-container');
             const descEl = document.getElementById('desc-text');
-            const fullText = document.getElementById('profile-desc').getAttribute('data-fulltext') || '';
+            const profileDesc = document.getElementById('profile-desc');
+            const fullText = (profileDesc && profileDesc.getAttribute('data-fulltext')) || '';
             const caret = document.getElementById('type-caret');
             const introDelay = 1000;
             const transitionDuration = 700;
             let typeStarted = false;
 
             function startTypewriter() {
-                if (typeStarted) return; // guard against multiple calls
+                if (typeStarted) return;
                 typeStarted = true;
+                descEl.textContent = '';
+                if (caret) caret.style.visibility = 'visible';
+
                 let i = 0;
                 const speed = 28;
-                caret.style.visibility = 'visible';
 
                 function typeNext() {
-                    if (i <= fullText.length - 1) {
+                    if (i < fullText.length) {
                         descEl.textContent += fullText.charAt(i);
                         i += 1;
                         setTimeout(typeNext, speed);
                     } else {
-                        caret.style.display = 'none';
+                        if (caret) caret.style.display = 'none';
                         body.classList.remove('cards-paused');
                     }
                 }
@@ -539,18 +537,22 @@
             }
 
             setTimeout(() => {
+                if (profileContainer) {
+                    profileContainer.removeAttribute('style');
+                }
                 body.classList.remove('is-intro');
 
                 const onTransEnd = (event) => {
-                    if (event.propertyName === 'transform' || event.propertyName === 'font-size') {
+                    if ((event.propertyName === 'transform' || event.propertyName === 'font-size' || event.propertyName === 'margin-top') && !typeStarted) {
                         profileContainer.removeEventListener('transitionend', onTransEnd);
                         startTypewriter();
                     }
                 };
 
-                profileContainer.addEventListener('transitionend', onTransEnd);
+                if (profileContainer) {
+                    profileContainer.addEventListener('transitionend', onTransEnd);
+                }
 
-                // fallback: only start if not already started after transitionDuration
                 setTimeout(() => {
                     if (!typeStarted) startTypewriter();
                 }, transitionDuration + 120);
