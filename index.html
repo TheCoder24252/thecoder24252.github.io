@@ -24,10 +24,9 @@
             --toggle-btn-active: #ffffff;
             --toggle-icon-color: #555555;
             --link-color: #3498db;
-            --particle-rgb: 190, 80, 80;
-            /* lighter particles on light backgrounds (darker look) */
-            --particle-opacity: 0.36;
-            --particle-line-opacity: 0.06;
+            --particle-rgb: 175, 35, 35;
+            --particle-opacity: 1;
+            --particle-line-opacity: 0.75;
             --card-glow: rgba(190, 80, 80, 0.18);
             --card-glow-hover: rgba(190, 80, 80, 0.34);
         }
@@ -44,10 +43,9 @@
             --toggle-btn-active: #444444;
             --toggle-icon-color: #f4f7f6;
             --link-color: #5dade2;
-            /* brighter particles in dark mode */
-            --particle-rgb: 255, 107, 107;
-            --particle-opacity: 0.92;
-            --particle-line-opacity: 0.16;
+            --particle-rgb: 255, 90, 90;
+            --particle-opacity: 1;
+            --particle-line-opacity: 0.65;
             --card-glow: rgba(255, 107, 107, 0.22);
             --card-glow-hover: rgba(255, 107, 107, 0.44);
         }
@@ -65,9 +63,9 @@
                 --toggle-btn-active: #444444;
                 --toggle-icon-color: #f4f7f6;
                 --link-color: #5dade2;
-                --particle-rgb: 255, 107, 107;
-                --particle-opacity: 0.92;
-                --particle-line-opacity: 0.16;
+                --particle-rgb: 255, 90, 90;
+                --particle-opacity: 1;
+                --particle-line-opacity: 0.65;
                 --card-glow: rgba(255, 107, 107, 0.22);
                 --card-glow-hover: rgba(255, 107, 107, 0.44);
             }
@@ -99,7 +97,6 @@
         }
 
         body > :not(#particle-canvas) {
-            position: relative;
             z-index: 1;
         }
 
@@ -211,6 +208,38 @@
             border: 4px solid var(--card-bg);
             box-shadow: 0 4px 8px var(--card-shadow);
             transition: width 0.7s, height 0.7s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .profile-img-wrap {
+            position: relative;
+            display: inline-flex;
+            line-height: 0;
+        }
+
+        .profile-img-wrap::after {
+            content: "";
+            position: absolute;
+            inset: -12px;
+            border: 4px solid transparent;
+            border-top-color: #ff0000;
+            border-right-color: #ff0000;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        body.is-intro .profile-img-wrap::after {
+            opacity: 1;
+            animation: profile-loading-ring 0.9s linear infinite;
+        }
+
+        @keyframes profile-loading-ring {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body.is-intro .profile-img-wrap::after {
+                animation: none;
+            }
         }
 
         body.is-intro .profile-img {
@@ -327,7 +356,9 @@
     </div>
 
     <div class="profile-container">
-        <img class="profile-img" src="https://avatars.githubusercontent.com/u/278525929?v=4" alt="TheCoder24252 Logo">
+        <span class="profile-img-wrap">
+            <img class="profile-img" src="https://avatars.githubusercontent.com/u/278525929?v=4" alt="TheCoder24252 Logo">
+        </span>
         <h1 class="username-title">TheCoder24252</h1>
         <p class="profile-desc" id="profile-desc" data-fulltext="Welcome to my website, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java. You can view my coding projects below."><span id="desc-text" aria-live="polite"></span><span id="type-caret" class="typewriter-caret" aria-hidden="true"></span></p>
     </div>
@@ -386,11 +417,11 @@
             particleCanvas.height = Math.round(particleHeight * pixelRatio);
             particleContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-            const count = Math.min(64, Math.max(22, Math.round((particleWidth * particleHeight) / 19000)));
+            const count = Math.min(80, Math.max(28, Math.round((particleWidth * particleHeight) / 16000)));
             particles = Array.from({ length: count }, () => ({
                 x: Math.random() * particleWidth,
                 y: Math.random() * particleHeight,
-                radius: 1.8 + Math.random() * 1.1,
+                radius: 2.7 + Math.random() * 1.3,
                 shade: Math.random() * 2 - 1,
                 vx: (Math.random() - 0.5) * 0.21,
                 vy: (Math.random() - 0.5) * 0.21
@@ -418,7 +449,7 @@
                     const otherY = ((other.y - parallaxOffset) % particleHeight + particleHeight) % particleHeight;
                     const distance = Math.hypot(particle.x - other.x, y - otherY);
                     if (distance < 120) {
-                        particleContext.globalAlpha = (1 - distance / 120) * 0.35;
+                        particleContext.globalAlpha = (1 - distance / 120) * 0.55;
                         particleContext.beginPath();
                         particleContext.moveTo(particle.x, y);
                         particleContext.lineTo(other.x, otherY);
@@ -511,7 +542,7 @@
             const profileDesc = document.getElementById('profile-desc');
             const fullText = (profileDesc && profileDesc.getAttribute('data-fulltext')) || '';
             const caret = document.getElementById('type-caret');
-            const introDelay = 1000;
+            const introDelay = 3000;
             const transitionDuration = 700;
             let typeStarted = false;
 
@@ -539,13 +570,38 @@
             }
 
             setTimeout(() => {
-                // remove the intro class so CSS returns element to its normal flow
+                const transitionElements = profileContainer
+                    ? [profileContainer, ...profileContainer.querySelectorAll('*')]
+                    : [];
+                const previousTransitions = transitionElements.map(element => element.style.transition);
+                const startRect = profileContainer && profileContainer.getBoundingClientRect();
+
+                transitionElements.forEach(element => {
+                    element.style.transition = 'none';
+                });
                 body.classList.remove('is-intro');
+                const endRect = profileContainer && profileContainer.getBoundingClientRect();
+
+                if (profileContainer && startRect && endRect) {
+                    profileContainer.style.transformOrigin = 'top left';
+                    profileContainer.style.transform = `translate(${startRect.left - endRect.left}px, ${startRect.top - endRect.top}px) scale(${startRect.width / endRect.width}, ${startRect.height / endRect.height})`;
+                    profileContainer.getBoundingClientRect();
+                }
+
+                transitionElements.forEach((element, index) => {
+                    element.style.transition = previousTransitions[index];
+                });
+
+                if (profileContainer) {
+                    requestAnimationFrame(() => {
+                        profileContainer.style.transform = 'none';
+                    });
+                }
 
                 function cleanupProfile() {
                     if (!profileContainer) return;
                     // clear any inline positioning that might keep it fixed to a corner
-                    ['position','top','left','transform','width','maxWidth','margin','zIndex','pointerEvents'].forEach(prop => profileContainer.style[prop] = '');
+                    ['position','top','left','transform','transformOrigin','width','maxWidth','margin','zIndex','pointerEvents'].forEach(prop => profileContainer.style[prop] = '');
                     // also clear potential inline sizing on the image
                     const img = profileContainer.querySelector('.profile-img');
                     if (img) { img.style.width = ''; img.style.height = ''; }
