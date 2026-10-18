@@ -186,13 +186,15 @@
             transition: transform 0.7s cubic-bezier(.22,.9,.26,1), margin-top 0.7s, max-width 0.7s;
         }
 
+        /* Make intro centered relative to the viewport using fixed positioning */
         body.is-intro .profile-container {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(1.45);
             margin-top: 0;
             max-width: none;
+            z-index: 10;
         }
 
         .profile-img {
@@ -237,6 +239,7 @@
             margin-left: 6px;
             vertical-align: bottom;
             animation: caret-blink 1s steps(2, start) infinite;
+            visibility: hidden;
         }
 
         @keyframes caret-blink {
@@ -505,8 +508,11 @@
             const caret = document.getElementById('type-caret');
             const introDelay = 1000;
             const transitionDuration = 700;
+            let typeStarted = false;
 
             function startTypewriter() {
+                if (typeStarted) return; // guard against multiple calls
+                typeStarted = true;
                 let i = 0;
                 const speed = 28;
                 caret.style.visibility = 'visible';
@@ -537,11 +543,10 @@
 
                 profileContainer.addEventListener('transitionend', onTransEnd);
 
+                // fallback: only start if not already started after transitionDuration
                 setTimeout(() => {
-                    if (body.classList.contains('cards-paused')) {
-                        startTypewriter();
-                    }
-                }, transitionDuration + 80);
+                    if (!typeStarted) startTypewriter();
+                }, transitionDuration + 120);
             }, introDelay);
         });
     </script>
