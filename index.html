@@ -84,9 +84,13 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centers everything horizontally */
+            align-items: center;
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.is-intro {
+            overflow: hidden;
         }
 
         #particle-canvas {
@@ -130,7 +134,6 @@
             transition: background-color 0.2s, box-shadow 0.2s, transform 0.08s;
         }
 
-        /* Highlight the chosen mode button */
         .theme-btn.active {
             background-color: var(--toggle-btn-active);
             box-shadow: 0 2px 6px rgba(0,0,0,0.18);
@@ -148,107 +151,121 @@
             transition: stroke 0.3s;
         }
 
-        /* The blueprint for the sliding animation */
-@keyframes slideUpFade {
-    from {
-        opacity: 0;
-        transform: translateY(40px); /* Starts 40 pixels lower */
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);    /* Moves up to its normal spot */
-    }
-}
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* Base class for elements that will slide in */
-.animate-on-load {
-    opacity: 0; /* Hidden before the animation starts */
-    animation: slideUpFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
+        .animate-on-load {
+            opacity: 0;
+            animation: slideUpFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
 
-/* Delay the project card so it slides up second */
-.delay-1 {
-    animation-delay: 0.3s;
-}
+        .cards-paused .animate-on-load {
+            animation-play-state: paused;
+            opacity: 0;
+        }
 
-.delay-2 {
-    animation-delay: 0.4s;
-}
+        .delay-1 { animation-delay: 0.3s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.6s; }
+        .delay-5 { animation-delay: 0.7s; }
 
-.delay-3 {
-    animation-delay: 0.5s;
-}
-
-.delay-4 {
-    animation-delay: 0.6s;
-}
-
-
-.delay-5 {
-    animation-delay: 0.7s;
-}
-        /* --- Content Layout Styling --- */
         .profile-container {
-            text-align: center; /* Centers the text inside the div */
+            text-align: center;
             margin-top: 60px;
             margin-bottom: 30px;
             max-width: 500px;
+            transition: transform 0.7s cubic-bezier(.22,.9,.26,1), margin-top 0.7s, max-width 0.7s;
         }
 
-        /* Makes the profile image perfectly round */
+        body.is-intro .profile-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.45);
+            margin-top: 0;
+            max-width: none;
+        }
+
         .profile-img {
             width: 150px;
             height: 150px;
-            border-radius: 50%; /* This creates the circle */
+            border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--card-bg);
             box-shadow: 0 4px 8px var(--card-shadow);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: width 0.7s, height 0.7s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.is-intro .profile-img {
+            width: 260px;
+            height: 260px;
         }
 
         .username-title {
             font-size: 2rem;
             margin: 15px 0 5px 0;
             color: var(--container-title);
-            transition: color 0.3s;
+            transition: font-size 0.7s, color 0.3s;
+        }
+
+        body.is-intro .username-title {
+            font-size: 3.6rem;
         }
 
         .profile-desc {
             font-size: 1.1rem;
             color: var(--desc-color);
             line-height: 1.5;
+            min-height: 1.4em;
             transition: color 0.3s;
         }
 
-        /* Card layout below the profile */
+        .typewriter-caret {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: currentColor;
+            margin-left: 6px;
+            vertical-align: bottom;
+            animation: caret-blink 1s steps(2, start) infinite;
+        }
+
+        @keyframes caret-blink {
+            50% { opacity: 0; }
+        }
+
         .project-card {
             cursor: pointer;
             background-color: var(--card-bg);
             border-radius: 12px;
-            /* base shadow + stronger red glow */
             box-shadow: 0 8px 20px var(--card-shadow), 0 0 36px var(--card-glow);
             max-width: 450px;
             width: 100%;
-            overflow: hidden; /* Keeps the image corners rounded */
+            overflow: hidden;
             transition: transform 0.2s, background-color 0.3s, box-shadow 0.25s ease;
             margin-bottom: 50px;
         }
 
-        /* Hover effect to make the card lift up */
         .project-card:hover {
             transform: translateY(-6px);
-            /* stronger shadow and glow on hover */
             box-shadow: 0 12px 28px var(--card-shadow), 0 0 48px var(--card-glow-hover);
         }
 
-        /* Image inside the project card */
         .card-img {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
 
-        /* Text area inside the card */
         .card-content {
             padding: 20px;
         }
@@ -279,32 +296,25 @@
         }
     </style>
 </head>
-<body>
+<body class="is-intro cards-paused">
     <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
-    <!-- Three-Setting Mode Switcher -->
     <div class="theme-switch-container">
-        <!-- Light Mode Button (Sun) -->
         <button class="theme-btn" id="light-btn" onclick="setTheme('light')" title="Light Mode">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
-        <!-- Device Theme Button (Monitor) -->
         <button class="theme-btn active" id="device-btn" onclick="setTheme('device')" title="Device Theme">
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
         </button>
-        <!-- Dark Mode Button (Moon) -->
         <button class="theme-btn" id="dark-btn" onclick="setTheme('dark')" title="Dark Mode">
             <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
     </div>
 
-    <!-- Centered Profile Section -->
-    <div class="profile-container animate-on-load">
+    <div class="profile-container">
         <img class="profile-img" src="https://avatars.githubusercontent.com/u/278525929?v=4" alt="TheCoder24252 Logo">
         <h1 class="username-title">TheCoder24252</h1>
-        <p class="profile-desc">
-          Welcome to my website, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java. You can view my coding projects below.
-        </p>
+        <p class="profile-desc" id="profile-desc" data-fulltext="Welcome to my website, I am a coder who codes in HTML, CSS, JS, Node.js, Rust and Java. You can view my coding projects below."><span id="desc-text" aria-live="polite"></span><span id="type-caret" class="typewriter-caret" aria-hidden="true"></span></p>
     </div>
 
     <div class="project-card animate-on-load delay-1" onclick="window.location.href='https://thecoder24252.github.io/CFOP-Learner'">
@@ -327,10 +337,10 @@
         <img class="card-img" src="https://thecoder24252.github.io/maze-game.png" alt="Maze Game Cover Image">
         <div class="card-content">
             <h2 class="card-title">Maze Game</h2>
-            <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails or you can save your credits to climb up the leaderboard.</p>
+            <p class="card-desc">Maze Game is a fun game where you need to navigate through mazes to get maze credits (an in game currency), you can use maze credits to buy skins and trails or you can challenge yourself with increasingly difficult layouts.</p>
         </div>
     </div>
-    <!-- Javascript to handle the switching logic -->
+
     <script>
         const particleCanvas = document.getElementById('particle-canvas');
         const particleContext = particleCanvas.getContext('2d');
@@ -458,23 +468,17 @@
         }
 
         function setTheme(themeName) {
-            // Update the HTML root attribute
             document.documentElement.setAttribute('data-theme', themeName);
             updateParticleColor();
             drawParticles();
 
-            // Save the choice in local storage
             localStorage.setItem('user-theme', themeName);
 
-            // Remove active status from all buttons (safe)
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-
-            // Add active status to the chosen button if it exists
             const btn = document.getElementById(themeName + '-btn');
             if (btn) btn.classList.add('active');
         }
 
-        // On page load, remember what theme the user chose last time
         const validThemes = ['light', 'dark', 'device'];
         const savedThemeRaw = localStorage.getItem('user-theme');
         const savedTheme = validThemes.includes(savedThemeRaw) ? savedThemeRaw : 'device';
@@ -491,6 +495,54 @@
                 updateParticleColor();
                 drawParticles();
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const profileContainer = document.querySelector('.profile-container');
+            const descEl = document.getElementById('desc-text');
+            const fullText = document.getElementById('profile-desc').getAttribute('data-fulltext') || '';
+            const caret = document.getElementById('type-caret');
+            const introDelay = 1000;
+            const transitionDuration = 700;
+
+            function startTypewriter() {
+                let i = 0;
+                const speed = 28;
+                caret.style.visibility = 'visible';
+
+                function typeNext() {
+                    if (i <= fullText.length - 1) {
+                        descEl.textContent += fullText.charAt(i);
+                        i += 1;
+                        setTimeout(typeNext, speed);
+                    } else {
+                        caret.style.display = 'none';
+                        body.classList.remove('cards-paused');
+                    }
+                }
+
+                setTimeout(typeNext, 80);
+            }
+
+            setTimeout(() => {
+                body.classList.remove('is-intro');
+
+                const onTransEnd = (event) => {
+                    if (event.propertyName === 'transform' || event.propertyName === 'font-size') {
+                        profileContainer.removeEventListener('transitionend', onTransEnd);
+                        startTypewriter();
+                    }
+                };
+
+                profileContainer.addEventListener('transitionend', onTransEnd);
+
+                setTimeout(() => {
+                    if (body.classList.contains('cards-paused')) {
+                        startTypewriter();
+                    }
+                }, transitionDuration + 80);
+            }, introDelay);
         });
     </script>
 </body>
