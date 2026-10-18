@@ -25,8 +25,9 @@
             --toggle-icon-color: #555555;
             --link-color: #3498db;
             --particle-rgb: 190, 80, 80;
-            --particle-opacity: 0.55;
-            --particle-line-opacity: 0.1;
+            /* lighter particles on light backgrounds (darker look) */
+            --particle-opacity: 0.36;
+            --particle-line-opacity: 0.06;
             --card-glow: rgba(190, 80, 80, 0.18);
             --card-glow-hover: rgba(190, 80, 80, 0.34);
         }
@@ -43,9 +44,10 @@
             --toggle-btn-active: #444444;
             --toggle-icon-color: #f4f7f6;
             --link-color: #5dade2;
+            /* brighter particles in dark mode */
             --particle-rgb: 255, 107, 107;
-            --particle-opacity: 0.8;
-            --particle-line-opacity: 0.12;
+            --particle-opacity: 0.92;
+            --particle-line-opacity: 0.16;
             --card-glow: rgba(255, 107, 107, 0.22);
             --card-glow-hover: rgba(255, 107, 107, 0.44);
         }
@@ -64,8 +66,8 @@
                 --toggle-icon-color: #f4f7f6;
                 --link-color: #5dade2;
                 --particle-rgb: 255, 107, 107;
-                --particle-opacity: 0.8;
-                --particle-line-opacity: 0.12;
+                --particle-opacity: 0.92;
+                --particle-line-opacity: 0.16;
                 --card-glow: rgba(255, 107, 107, 0.22);
                 --card-glow-hover: rgba(255, 107, 107, 0.44);
             }
@@ -537,14 +539,24 @@
             }
 
             setTimeout(() => {
-                if (profileContainer) {
-                    profileContainer.removeAttribute('style');
-                }
+                // remove the intro class so CSS returns element to its normal flow
                 body.classList.remove('is-intro');
+
+                function cleanupProfile() {
+                    if (!profileContainer) return;
+                    // clear any inline positioning that might keep it fixed to a corner
+                    ['position','top','left','transform','width','maxWidth','margin','zIndex','pointerEvents'].forEach(prop => profileContainer.style[prop] = '');
+                    // also clear potential inline sizing on the image
+                    const img = profileContainer.querySelector('.profile-img');
+                    if (img) { img.style.width = ''; img.style.height = ''; }
+                    // ensure it is displayed normally
+                    profileContainer.style.display = '';
+                }
 
                 const onTransEnd = (event) => {
                     if ((event.propertyName === 'transform' || event.propertyName === 'font-size' || event.propertyName === 'margin-top') && !typeStarted) {
-                        profileContainer.removeEventListener('transitionend', onTransEnd);
+                        if (profileContainer) profileContainer.removeEventListener('transitionend', onTransEnd);
+                        cleanupProfile();
                         startTypewriter();
                     }
                 };
@@ -553,9 +565,11 @@
                     profileContainer.addEventListener('transitionend', onTransEnd);
                 }
 
+                // fallback in case transitionend doesn't fire (some browsers/conditions)
                 setTimeout(() => {
+                    cleanupProfile();
                     if (!typeStarted) startTypewriter();
-                }, transitionDuration + 120);
+                }, transitionDuration + 160);
             }, introDelay);
         });
     </script>
